@@ -1,0 +1,18 @@
+/* Points.css */
+.card {
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card.border-warning {
+  border-color: #ffc107 !important;
+  box-shadow: 0 0 15px rgba(255, 193, 7, 0.3);
+}
+
+.display-4 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}

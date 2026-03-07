@@ -1,0 +1,32 @@
+
+.apply-page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa; 
+}
+.navbar {
+  background-color: #fff !important;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+.card-header-custom {
+  background: linear-gradient(45deg, #0d6efd, #0a58ca);
+  color: white;
+  padding: 1.5rem;
+  border-top-left-radius: 1rem !important;
+  border-top-right-radius: 1rem !important;
+}
+.form-label {
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+.form-control:focus, .form-select:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+.fa-spin {
+  margin-left: 5px;
+}
+[data-lang="ar"] .lang-en { display: none !important; }
+[data-lang="en"] .lang-ar { display: none !important; }
