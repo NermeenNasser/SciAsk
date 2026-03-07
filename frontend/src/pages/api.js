@@ -1,164 +1,155 @@
+const API_URL = import.meta.env.VITE_API_URL || 'https://nermeennasser-backend-api.hf.space';
 
-// Initialize localStorage with dummy data if empty
-const initDummyData = () => {
-  if (!localStorage.getItem('sciask_users_db')) {
-    const dummy_users = [
-      { id: 1, name: "Nermeen Nasser", email: "nermeen@example.com", track: "URE", points: 150, role: "Student" },
-      { id: 2, name: "Ahmed Ali", email: "ahmed@test.com", track: "URI", points: 50, role: "Student" },
-      { id: 3, name: "Admin User", email: "admin@sciask.com", track: "-", points: 0, role: "Admin" },
-    ];
-    localStorage.setItem('sciask_users_db', JSON.stringify(dummy_users));
-  }
+// ---  المستخدمين (Users) ---
+export const login = async (credentials) => {
+  const res = await fetch(`${API_URL}/api/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(credentials),
+  });
+  if (!res.ok) throw new Error('فشل تسجيل الدخول');
+  return await res.json();
 };
 
-// ✅ Removed setTimeout delays for faster performance
 export const getAllUsers = async () => {
-  initDummyData();
-  const users = JSON.parse(localStorage.getItem('sciask_users_db')) || [];
-  return Promise.resolve(users);
+  const res = await fetch(`${API_URL}/api/users`);
+  return await res.json();
 };
 
 export const getUserById = async (id) => {
-  initDummyData();
-  const users = JSON.parse(localStorage.getItem('sciask_users_db')) || [];
-  return Promise.resolve(users.find(u => u.id === id));
+  const res = await fetch(`${API_URL}/api/users/${id}`);
+  return await res.json();
 };
 
 export const deleteUserById = async (id) => {
-  const users = JSON.parse(localStorage.getItem('sciask_users_db')) || [];
-  const filteredUsers = users.filter(user => user.id !== id);
-  localStorage.setItem('sciask_users_db', JSON.stringify(filteredUsers));
-  return Promise.resolve({ success: true, message: "User deleted" });
+  const res = await fetch(`${API_URL}/api/users/${id}`, { method: 'DELETE' });
+  return await res.json();
 };
 
 export const updateUserPoints = async (id, points) => {
-  const users = JSON.parse(localStorage.getItem('sciask_users_db')) || [];
-  const updatedUsers = users.map(u => u.id === id ? { ...u, points } : u);
-  localStorage.setItem('sciask_users_db', JSON.stringify(updatedUsers));
-  return Promise.resolve({ success: true, message: "Points updated" });
+  const res = await fetch(`${API_URL}/api/users/${id}/points`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ points }),
+  });
+  return await res.json();
 };
 
+// ---  المحاضرات (Lectures) ---
 export const getLectures = async () => {
-  const lectures = JSON.parse(localStorage.getItem('sciask_lectures_db')) || [];
-  return Promise.resolve(lectures);
+  const res = await fetch(`${API_URL}/api/lectures`);
+  return await res.json();
 };
 
 export const addNewLecture = async (lectureData) => {
-  const lectures = JSON.parse(localStorage.getItem('sciask_lectures_db')) || [];
-  const newLec = { id: Date.now(), ...lectureData, date: new Date().toLocaleDateString('ar-EG') };
-  const updatedLectures = [...lectures, newLec];
-  localStorage.setItem('sciask_lectures_db', JSON.stringify(updatedLectures));
-  return Promise.resolve(newLec);
+  const res = await fetch(`${API_URL}/api/lectures`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(lectureData),
+  });
+  return await res.json();
 };
 
 export const deleteLectureById = async (id) => {
-  const lectures = JSON.parse(localStorage.getItem('sciask_lectures_db')) || [];
-  const filtered = lectures.filter(l => l.id !== id);
-  localStorage.setItem('sciask_lectures_db', JSON.stringify(filtered));
-  return Promise.resolve({ success: true });
+  const res = await fetch(`${API_URL}/api/lectures/${id}`, { method: 'DELETE' });
+  return await res.json();
 };
 
+// ---  الامتحانات (Exams & Questions) ---
 export const getExams = async () => {
-  const exams = JSON.parse(localStorage.getItem('sciask_exams_db')) || [];
-  return Promise.resolve(exams);
+  const res = await fetch(`${API_URL}/api/exams`);
+  return await res.json();
 };
 
 export const addExam = async (examData) => {
-  const exams = JSON.parse(localStorage.getItem('sciask_exams_db')) || [];
-  const newExam = { id: Date.now(), ...examData, created_at: new Date().toLocaleDateString('ar-EG') };
-  exams.push(newExam);
-  localStorage.setItem('sciask_exams_db', JSON.stringify(exams));
-  return Promise.resolve(newExam);
+  const res = await fetch(`${API_URL}/api/exams`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(examData),
+  });
+  return await res.json();
 };
 
 export const deleteExam = async (id) => {
-  const exams = JSON.parse(localStorage.getItem('sciask_exams_db')) || [];
-  const filtered = exams.filter(e => e.id !== id);
-  localStorage.setItem('sciask_exams_db', JSON.stringify(filtered));
-  return Promise.resolve({ success: true });
+  const res = await fetch(`${API_URL}/api/exams/${id}`, { method: 'DELETE' });
+  return await res.json();
 };
 
 export const getQuestions = async (examId) => {
-  const questions = JSON.parse(localStorage.getItem('sciask_questions_db')) || [];
-  return Promise.resolve(questions.filter(q => q.exam_id === examId));
+  const res = await fetch(`${API_URL}/api/exams/${examId}/questions`);
+  return await res.json();
 };
 
 export const addQuestion = async (questionData) => {
-  const questions = JSON.parse(localStorage.getItem('sciask_questions_db')) || [];
-  const newQuestion = { id: Date.now(), ...questionData };
-  questions.push(newQuestion);
-  localStorage.setItem('sciask_questions_db', JSON.stringify(questions));
-  return Promise.resolve(newQuestion);
-};
-
-export const deleteQuestion = async (id) => {
-  const questions = JSON.parse(localStorage.getItem('sciask_questions_db')) || [];
-  const filtered = questions.filter(q => q.id !== id);
-  localStorage.setItem('sciask_questions_db', JSON.stringify(filtered));
-  return Promise.resolve({ success: true });
+  const res = await fetch(`${API_URL}/api/questions`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(questionData),
+  });
+  return await res.json();
 };
 
 export const submitExam = async (examId, answers) => {
-  const attempts = JSON.parse(localStorage.getItem('sciask_exam_attempts_db')) || [];
-  const newAttempt = { id: Date.now(), exam_id: examId, answers, score: 0, submitted_at: new Date().toLocaleDateString('ar-EG') };
-  attempts.push(newAttempt);
-  localStorage.setItem('sciask_exam_attempts_db', JSON.stringify(attempts));
-  return Promise.resolve({ success: true, message: "Exam submitted successfully" });
+  const res = await fetch(`${API_URL}/api/exams/${examId}/submit`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ answers }),
+  });
+  return await res.json();
 };
 
+// ---  الأخبار (News) ---
 export const getNews = async () => {
-  const news = JSON.parse(localStorage.getItem('sciask_news_db')) || [];
-  return Promise.resolve(news);
+  const res = await fetch(`${API_URL}/api/news`);
+  return await res.json();
 };
 
 export const addNews = async (newsData) => {
-  const news = JSON.parse(localStorage.getItem('sciask_news_db')) || [];
-  const newNews = { id: Date.now(), ...newsData, created_at: new Date().toLocaleDateString('ar-EG') };
-  news.push(newNews);
-  localStorage.setItem('sciask_news_db', JSON.stringify(news));
-  return Promise.resolve(newNews);
+  const res = await fetch(`${API_URL}/api/news`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(newsData),
+  });
+  return await res.json();
 };
 
 export const deleteNews = async (id) => {
-  const news = JSON.parse(localStorage.getItem('sciask_news_db')) || [];
-  const filtered = news.filter(n => n.id !== id);
-  localStorage.setItem('sciask_news_db', JSON.stringify(filtered));
-  return Promise.resolve({ success: true });
+  const res = await fetch(`${API_URL}/api/news/${id}`, { method: 'DELETE' });
+  return await res.json();
 };
 
+// ---  التطوع (Volunteers) ---
 export const getVolunteers = async () => {
-  const volunteers = JSON.parse(localStorage.getItem('sciask_volunteers_db')) || [];
-  return Promise.resolve(volunteers);
+  const res = await fetch(`${API_URL}/api/volunteers`);
+  return await res.json();
 };
 
 export const submitVolunteerApplication = async (volunteerData) => {
-  const volunteers = JSON.parse(localStorage.getItem('sciask_volunteers_db')) || [];
-  const newVolunteer = { id: Date.now(), ...volunteerData, submitted_at: new Date().toLocaleDateString('ar-EG') };
-  volunteers.push(newVolunteer);
-  localStorage.setItem('sciask_volunteers_db', JSON.stringify(volunteers));
-  return Promise.resolve({ success: true, message: "Application submitted" });
+  const res = await fetch(`${API_URL}/api/volunteers`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(volunteerData),
+  });
+  return await res.json();
 };
 
 export const deleteVolunteerById = async (id) => {
-  const volunteers = JSON.parse(localStorage.getItem('sciask_volunteers_db')) || [];
-  const filtered = volunteers.filter(v => v.id !== id);
-  localStorage.setItem('sciask_volunteers_db', JSON.stringify(filtered));
-  return Promise.resolve({ success: true });
+  const res = await fetch(`${API_URL}/api/volunteers/${id}`, { method: 'DELETE' });
+  return await res.json();
 };
 
+// ---  التقدم (Progress) ---
 export const getUserProgress = async (email) => {
-  const progress = JSON.parse(localStorage.getItem('sciask_progress_db')) || [];
-  return Promise.resolve(progress.filter(p => p.user_email === email));
+  const res = await fetch(`${API_URL}/api/progress/${email}`);
+  return await res.json();
 };
 
 export const markLectureComplete = async (userEmail, lectureId) => {
-  const progress = JSON.parse(localStorage.getItem('sciask_progress_db')) || [];
-  const exists = progress.find(p => p.user_email === userEmail && p.lecture_id === lectureId);
-  
-  if (!exists) {
-    progress.push({ id: Date.now(), user_email: userEmail, lecture_id: lectureId, completed: true, completed_at: new Date().toLocaleDateString('ar-EG') });
-    localStorage.setItem('sciask_progress_db', JSON.stringify(progress));
-  }
-  
-  return Promise.resolve({ success: true, message: "Lecture marked as complete" });
+  const res = await fetch(`${API_URL}/api/progress`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_email: userEmail, lecture_id: lectureId }),
+  });
+  return await res.json();
 };
+
