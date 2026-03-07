@@ -1,5 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || 'https://nermeennasser-backend-api.hf.space';
-
+const API_URL = 'https://nermeennasser-backend-api.hf.space';
 // ---  المستخدمين (Users) ---
 export const login = async (credentials) => {
   const res = await fetch(`${API_URL}/sciask_api/login.php`, {
