@@ -1,19 +1,18 @@
+const path = require('path'); //د
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 const express = require('express');
-const cors = require('cors');
+const cors = require('cors');هنا
 const Database = require('better-sqlite3');
-const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4000; 
 
-app.use(cors());
+app.use(cors());  
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const db = new Database(path.join(__dirname, 'sciask.db'));
+const db = new Database(path.join(__dirname, 'sciask.db'));  
 
-// Enable foreign keys
 db.pragma('foreign_keys = ON');
 
 db.exec(`
