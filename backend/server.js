@@ -115,6 +115,16 @@ try {
     db.exec(`ALTER TABLE questions ADD COLUMN points INTEGER DEFAULT 1`);
     console.log('Points column added successfully!');
   }
+  
+  // Check if role column exists in users table
+  const usersTableInfo = db.prepare("PRAGMA table_info(users)").all();
+  const hasRoleColumn = usersTableInfo.some(col => col.name === 'role');
+  
+  if (!hasRoleColumn) {
+    console.log('Adding role column to users table...');
+    db.exec(`ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'student'`);
+    console.log('Role column added successfully!');
+  }
 } catch (e) {
   console.log('Table migration note:', e.message);
 }
