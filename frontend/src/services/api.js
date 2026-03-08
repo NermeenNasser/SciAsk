@@ -1,7 +1,7 @@
 
 
 
-const API_BASE = 'http://localhost:4000/sciask_api';
+const API_BASE = 'https://nermeennasser-backend-api.hf.space/sciask_api';
 
 
 export const login = async (credentials) => {
