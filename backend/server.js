@@ -1,10 +1,10 @@
 const path = require('path'); //د
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 const express = require('express');
-const cors = require('cors');هنا
+const cors = require('cors');
 const Database = require('better-sqlite3');
 
-const app = express();
+const app = express(); 
 const PORT = process.env.PORT || 4000; 
 
 app.use(cors());  
