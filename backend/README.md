@@ -1,19 +1,4 @@
 # SciAsk Backend
-
-## تشغيل السيرفر
-
-```bash
-cd backend
-npm install
-npm start
-```
-
-## معلومات السيرفر
-
-- **المنفذ**: 3000
-- **قاعدة البيانات**: SQLite (sciask.db)
-- **رابط الـ API**: http://localhost:3000/sciask_api/
-
 ## نقاط النهاية المتاحة
 
 ### المصادقة
