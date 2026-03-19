@@ -172,8 +172,14 @@ function URI() {
             >
               <i className="fab fa-facebook fa-lg"></i>
             </a>
-            <a href="https://github.com/NermeenNasser" className="text-white mx-2">
-              <i className="fab fa-github fa-lg"></i>
+             <a href="www.linkedin.com/in/nermeen-n-42722828a" className="text-white mx-2">
+              <i className="fab fa-linkedin fa-lg"></i>
+            </a>
+            <a
+              href="https://www.instagram.com/nermeennasser274/"
+              className="text-white mx-2"
+            >
+              <i className="fab fa-instagram fa-lg"></i>
             </a>
           </div>
         </div>
