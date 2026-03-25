@@ -1,5 +1,5 @@
 
-const API_BASE = 'http://localhost:4000/sciask_api';
+const API_BASE = '/sciask_api';
 
 
 export const login = async (credentials) => {

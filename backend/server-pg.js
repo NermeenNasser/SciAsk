@@ -10,6 +10,13 @@ pool.on('error', (err) => {
   console.error('PostgreSQL pool error:', err.stack);
 });
 
+// Test connection
+async function getPool() {
+  const client = await pool.connect();
+  client.release();
+  return pool;
+}
+
 const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
@@ -328,7 +335,7 @@ app.post('/sciask_api/mark_complete.php', async (req, res) => {
     const existsResult = await client.query('SELECT id FROM progress WHERE user_email = $1 AND lecture_id = $2', [email, lecture_id]);
     if (existsResult.rows.length === 0) {
       await client.query(
-        'INSERT INTO progress (user_email, lecture_id, completed, completed_at) VALUES ($1, $2, 1, $3)',
+        'INSERT INTO progress (user_email, lecture_id, completed, completed_at) VALUES ($1, $2, $1, $3)',
         [email, lecture_id, completed_at]
       );
       const userResult = await client.query('SELECT points FROM users WHERE email = $1', [email]);
@@ -374,8 +381,7 @@ app.post('/sciask_api/submit_volunteer.php', async (req, res) => {
     res.json({ success: true, message: 'تم تقديم طلب التطوع بنجاح', id: result.rows[0].id });
   } catch (error) {
     res.json({ success: false, message: 'خطأ في الإرسال' });
-  
-} finally {
+  } finally {
     client.release();
   }
 });
